@@ -1,0 +1,17 @@
+<div *ngIf="events.length; else loading">
+  <div *ngFor="let event of events" class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ event.title }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{ event.startDate | date:'mediumDate' }}</h6>
+      <h6 class="card-subtitle mb-2 text-muted">{{ event.endDate | date:'mediumDate' }}</h6>
+      <p class="card-text">{{ event.description }}</p>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="text-center">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2">Caricamento eventi...</p>
+  </div>
+</ng-template>
