@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
@@ -14,28 +15,24 @@ export class AuthComponent {
   username = '';
   password = '';
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   onLogin() {
-    const loginPayload = {
+    this.http.post<any>('https://localhost:7143/api/users/login', {
       username: this.username,
       password: this.password
-    };
-
-    this.http.post<number>('https://localhost:7143/api/Users/login', loginPayload)
-      .subscribe({
-        next: (userId) => {
-          if (userId > 0) {
-            localStorage.setItem('userId', userId.toString());
-            this.router.navigate(['/']);
-          } else {
-            alert('Username o password errati');
-          }
-        },
-        error: (err) => {
-          console.error('Errore durante il login:', err);
-          alert('Errore durante la connessione al server.');
-        }
-      });
+    }).subscribe({
+      next: (res) => {
+        this.authService.login(res.token, res.username, res.userid);
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        alert('Credenziali errate');
+      }
+    });
   }
 }

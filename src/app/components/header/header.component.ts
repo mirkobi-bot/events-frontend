@@ -1,11 +1,23 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
-  imports: [RouterModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule]
 })
-export class HeaderComponent { }
+export class HeaderComponent {
+  constructor(public auth: AuthService) { }
+
+  onLogout() {
+    this.auth.logout();
+  }
+
+  log() {
+    console.log("Navigazione verso login");
+  }
+}

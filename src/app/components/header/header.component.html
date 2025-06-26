@@ -1,14 +1,13 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">Eventi</a>
+<nav class="navbar navbar-light bg-light px-3">
+  <a routerLink="/">Home</a>
 
-    <!-- Form di ricerca -->
-    <div class="d-flex ms-auto align-items-center">
-      <input class="form-control me-2" type="search" placeholder="Cerca" />
-      <button class="btn btn-outline-primary me-3" type="button">Cerca</button>
-
-      <!-- Link Accedi -->
-      <a class="btn btn-outline-secondary" routerLink="/login">Accedi</a>
-    </div>
+  <div *ngIf="auth.isLoggedIn(); else guest">
+    <a routerLink="/dashboard">Dashboard</a>
+    <span class="me-3">Ciao {{ auth.getUsername() }}</span>
+    <button routerLink="/" class="btn btn-outline-danger" (click)="onLogout()">Logout</button>
   </div>
+
+  <ng-template #guest>
+    <a routerLink="/login" class="btn btn-outline-secondary" (click) ="log()">Accedi</a>
+  </ng-template>
 </nav>
